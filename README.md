@@ -2,14 +2,13 @@
 O PersonalFlow é um sistema web de gerenciamento pessoal de tarefas e anotações que ajuda usuários a organizar atividades diárias, acompanhar o progresso e manter anotações centralizadas de forma simples e intuitiva.
  Objetivo
 Desenvolver uma aplicação limpa e funcional que permita ao usuário registrar ideias, planejar metas e visualizar o andamento de suas tarefas com uma interface moderna inspirada no Obsidian e funcionalidades do Notion.
-👥Público-Alvo
 
+publico alvo:
 Estudantes que desejam organizar estudos e trabalhos
 Profissionais que precisam acompanhar tarefas e prazos
 Qualquer pessoa que queira centralizar anotações e planos
 
- Funcionalidades
-Tarefas
+Funcionalidades:
 
  Criar, editar e excluir tarefas pessoais
  Marcar tarefas como concluídas
