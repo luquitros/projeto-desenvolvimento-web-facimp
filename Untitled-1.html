@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PersonalFlow - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Cores Obsidian Dark Theme */
+        --bg-primary: #1e1e1e;
+        --bg-secondary: #2d2d2d;
+        --bg-tertiary: #252525;
+        --accent: #7f6df2;
+        --accent-hover: #9680f5;
+        --text-primary: #dcddde;
+        --text-secondary: #b4b4b4;
+        --text-muted: #888888;
+        --border: #3d3d3d;
+        --success: #00c851;
+        --warning: #ff9800;
+        --danger: #ff5252;
+        --sidebar-width: 280px;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      /* Layout Principal */
+      .app-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: var(--sidebar-width);
+        background: var(--bg-secondary);
+        border-right: 1px solid var(--border);
+        padding: 20px;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px;
+      }
+
+      .logo {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: -0.5px;
+      }
+
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+        background: var(--accent);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .search-box {
+        width: 100%;
+        padding: 10px 12px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-size: 14px;
+        margin-bottom: 24px;
+        font-family: "Inter", sans-serif;
+      }
+
+      .search-box::placeholder {
+        color: var(--text-muted);
+      }
+
+      .search-box:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+
+      .nav-section {
+        margin-bottom: 24px;
+      }
+
+      .nav-section-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        padding: 0 8px;
+      }
+
+      .nav-menu {
+        list-style: none;
+      }
+
+      .nav-item {
+        margin-bottom: 2px;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-size: 14px;
+      }
+
+      .nav-link:hover {
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+      }
+
+      .nav-link.active {
+        background: var(--accent);
+        color: white;
+      }
+
+      .nav-icon {
+        font-size: 16px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .btn-new {
+        width: 100%;
+        padding: 10px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 16px;
+        transition: all 0.2s ease;
+        font-family: "Inter", sans-serif;
+      }
+
+      .btn-new:hover {
+        background: var(--accent-hover);
+      }
+
+      /* Área Principal */
+      .main-content {
+        margin-left: var(--sidebar-width);
+        flex: 1;
+        padding: 40px;
+        max-width: 1400px;
+      }
+
+      .header {
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        letter-spacing: -0.5px;
+      }
+
+      .header p {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      /* Quick Actions */
+      .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .quick-action-card {
+        background: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .quick-action-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      .quick-action-icon {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      .quick-action-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .quick-action-desc {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      /* Seções do Dashboard */
+      .dashboard-section {
+        margin-bottom: 40px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .section-link {
+        font-size: 13px;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .section-link:hover {
+        color: var(--accent);
+      }
+
+      /* Cards de Conteúdo */
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 16px;
+      }
+
+      .content-card {
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .content-card:hover {
+        border-color: var(--accent);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .card-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      .card-content {
+        flex: 1;
+      }
+
+      .card-title {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        color: var(--text-primary);
+      }
+
+      .card-description {
+        color: var(--text-secondary);
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+
+      .card-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .card-tag {
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 500;
+        background: var(--bg-tertiary);
+      }
+
+      .tag-high {
+        color: var(--danger);
+      }
+      .tag-medium {
+        color: var(--warning);
+      }
+      .tag-low {
+        color: var(--success);
+      }
+
+      /* Lista de Tarefas Recentes */
+      .task-list {
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+
+      .task-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.2s;
+      }
+
+      .task-item:last-child {
+        border-bottom: none;
+      }
+
+      .task-item:hover {
+        background: var(--bg-tertiary);
+      }
+
+      .task-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: var(--accent);
+      }
+
+      .task-content {
+        flex: 1;
+      }
+
+      .task-name {
+        font-size: 14px;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+      }
+
+      .task-info {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .task-status {
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      .status-pending {
+        background: rgba(255, 152, 0, 0.1);
+        color: var(--warning);
+      }
+
+      .status-progress {
+        background: rgba(127, 109, 242, 0.1);
+        color: var(--accent);
+      }
+
+      .status-done {
+        background: rgba(0, 200, 81, 0.1);
+        color: var(--success);
+      }
+
+      /* Grid de Páginas */
+      .pages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 12px;
+      }
+
+      .page-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .page-card:hover {
+        border-color: var(--accent);
+        background: var(--bg-tertiary);
+      }
+
+      .page-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .page-emoji {
+        font-size: 20px;
+      }
+
+      .page-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .page-preview {
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* Responsividade */
+      @media (max-width: 1024px) {
+        .content-grid {
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+          z-index: 100;
+        }
+
+        .main-content {
+          margin-left: 0;
+          padding: 24px;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .header h1 {
+          font-size: 24px;
+        }
+
+        .quick-actions {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">
+          <div class="logo-icon">PF</div>
+          PersonalFlow
+        </div>
+
+        <input type="text" class="search-box" placeholder="Buscar..." />
+
+        <nav>
+          <div class="nav-section">
+            <div class="nav-section-title">Workspace</div>
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="#" class="nav-link active">
+                  <span class="nav-icon">🏠</span>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">📋</span>
+                  Todas as Tarefas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">📅</span>
+                  Calendário
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">📊</span>
+                  Projetos
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Páginas</div>
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">📝</span>
+                  Anotações
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">📚</span>
+                  Wiki Pessoal
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">💡</span>
+                  Ideias
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">🎯</span>
+                  Metas 2025
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Favoritos</div>
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">⭐</span>
+                  Projeto Final
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <span class="nav-icon">📖</span>
+                  Lista de Leitura
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <button class="btn-new">+ Nova Página</button>
+      </aside>
+
+      <!-- Conteúdo Principal -->
+      <main class="main-content">
+        <header class="header">
+          <h1>Bom dia, Lucas 👋</h1>
+          <p>Sexta-feira, 24 de Outubro de 2025</p>
+        </header>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <div class="quick-action-card">
+            <div class="quick-action-icon">✏️</div>
+            <div class="quick-action-title">Nova Anotação</div>
+            <div class="quick-action-desc">Criar documento</div>
+          </div>
+          <div class="quick-action-card">
+            <div class="quick-action-icon">✓</div>
+            <div class="quick-action-title">Adicionar Tarefa</div>
+            <div class="quick-action-desc">Quick add</div>
+          </div>
+          <div class="quick-action-card">
+            <div class="quick-action-icon">📊</div>
+            <div class="quick-action-title">Novo Projeto</div>
+            <div class="quick-action-desc">Criar workspace</div>
+          </div>
+          <div class="quick-action-card">
+            <div class="quick-action-icon">📁</div>
+            <div class="quick-action-title">Nova Pasta</div>
+            <div class="quick-action-desc">Organizar conteúdo</div>
+          </div>
+        </div>
+
+        <!-- Tarefas Recentes -->
+        <section class="dashboard-section">
+          <div class="section-header">
+            <h2 class="section-title">Tarefas de Hoje</h2>
+            <a href="#" class="section-link">Ver todas →</a>
+          </div>
+          <div class="task-list">
+            <div class="task-item">
+              <input type="checkbox" class="task-checkbox" />
+              <div class="task-content">
+                <div class="task-name">Implementar sistema de autenticação</div>
+                <div class="task-info">Projeto PersonalFlow · Vence hoje</div>
+              </div>
+              <span class="task-status status-progress">Em progresso</span>
+            </div>
+            <div class="task-item">
+              <input type="checkbox" class="task-checkbox" />
+              <div class="task-content">
+                <div class="task-name">Revisar documentação técnica</div>
+                <div class="task-info">Documentação · Prioridade alta</div>
+              </div>
+              <span class="task-status status-pending">Pendente</span>
+            </div>
+            <div class="task-item">
+              <input type="checkbox" class="task-checkbox" checked />
+              <div class="task-content">
+                <div class="task-name">
+                  Configurar ambiente de desenvolvimento
+                </div>
+                <div class="task-info">Setup · Concluída hoje</div>
+              </div>
+              <span class="task-status status-done">Concluída</span>
+            </div>
+            <div class="task-item">
+              <input type="checkbox" class="task-checkbox" />
+              <div class="task-content">
+                <div class="task-name">Criar protótipo de interface</div>
+                <div class="task-info">Design · Vence amanhã</div>
+              </div>
+              <span class="task-status status-pending">Pendente</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Projetos Ativos -->
+        <section class="dashboard-section">
+          <div class="section-header">
+            <h2 class="section-title">Projetos Ativos</h2>
+            <a href="#" class="section-link">Ver todos →</a>
+          </div>
+          <div class="content-grid">
+            <div class="content-card">
+              <div class="card-header">
+                <span class="card-icon">🚀</span>
+                <div class="card-content">
+                  <h3 class="card-title">PersonalFlow MVP</h3>
+                </div>
+              </div>
+              <p class="card-description">
+                Sistema de gerenciamento pessoal de tarefas e anotações.
+                Desenvolvimento da versão inicial.
+              </p>
+              <div class="card-meta">
+                <span class="card-tag tag-high">Alta Prioridade</span>
+                <span>7 tarefas pendentes</span>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header">
+                <span class="card-icon">📚</span>
+                <div class="card-content">
+                  <h3 class="card-title">Estudos de React</h3>
+                </div>
+              </div>
+              <p class="card-description">
+                Aprofundamento em React, hooks e gerenciamento de estado.
+                Projeto de aprendizado contínuo.
+              </p>
+              <div class="card-meta">
+                <span class="card-tag tag-medium">Média Prioridade</span>
+                <span>12 anotações</span>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header">
+                <span class="card-icon">💼</span>
+                <div class="card-content">
+                  <h3 class="card-title">Portfolio Profissional</h3>
+                </div>
+              </div>
+              <p class="card-description">
+                Atualização do portfólio com novos projetos e melhorias no
+                design responsivo.
+              </p>
+              <div class="card-meta">
+                <span class="card-tag tag-low">Baixa Prioridade</span>
+                <span>3 tarefas</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Páginas Recentes -->
+        <section class="dashboard-section">
+          <div class="section-header">
+            <h2 class="section-title">Páginas Recentes</h2>
+            <a href="#" class="section-link">Ver todas →</a>
+          </div>
+          <div class="pages-grid">
+            <div class="page-card">
+              <div class="page-header">
+                <span class="page-emoji">📝</span>
+                <h3 class="page-title">Reunião de Planejamento</h3>
+              </div>
+              <p class="page-preview">
+                Notas sobre o planejamento do sprint e definição de prioridades
+                para a próxima semana...
+              </p>
+            </div>
+
+            <div class="page-card">
+              <div class="page-header">
+                <span class="page-emoji">💡</span>
+                <h3 class="page-title">Ideias de Features</h3>
+              </div>
+              <p class="page-preview">
+                Lista de funcionalidades interessantes para implementar no
+                PersonalFlow no futuro...
+              </p>
+            </div>
+
+            <div class="page-card">
+              <div class="page-header">
+                <span class="page-emoji">🎯</span>
+                <h3 class="page-title">Metas do Mês</h3>
+              </div>
+              <p class="page-preview">
+                Objetivos pessoais e profissionais para outubro de 2025.
+                Acompanhamento de progresso...
+              </p>
+            </div>
+
+            <div class="page-card">
+              <div class="page-header">
+                <span class="page-emoji">📖</span>
+                <h3 class="page-title">Recursos de Estudo</h3>
+              </div>
+              <p class="page-preview">
+                Coleção de artigos, tutoriais e documentações úteis para
+                desenvolvimento web...
+              </p>
+            </div>
+
+            <div class="page-card">
+              <div class="page-header">
+                <span class="page-emoji">🔧</span>
+                <h3 class="page-title">Setup de Desenvolvimento</h3>
+              </div>
+              <p class="page-preview">
+                Configurações, ferramentas e plugins utilizados no ambiente de
+                desenvolvimento...
+              </p>
+            </div>
+
+            <div class="page-card">
+              <div class="page-header">
+                <span class="page-emoji">✅</span>
+                <h3 class="page-title">Checklist de Deploy</h3>
+              </div>
+              <p class="page-preview">
+                Passo a passo para fazer deploy de aplicações. Verificações de
+                segurança e performance...
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Interações básicas
+      document.querySelectorAll(".task-checkbox").forEach((checkbox) => {
+        checkbox.addEventListener("change", function () {
+          const taskItem = this.closest(".task-item");
+          const status = taskItem.querySelector(".task-status");
+
+          if (this.checked) {
+            status.className = "task-status status-done";
+            status.textContent = "Concluída";
+          } else {
+            status.className = "task-status status-pending";
+            status.textContent = "Pendente";
+          }
+        });
+      });
+
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          document
+            .querySelectorAll(".nav-link")
+            .forEach((l) => l.classList.remove("active"));
+          this.classList.add("active");
+        });
+      });
+
+      document.querySelector(".btn-new").addEventListener("click", function () {
+        alert("Modal de criação de nova página será implementado!");
+      });
+
+      document.querySelectorAll(".quick-action-card").forEach((card) => {
+        card.addEventListener("click", function () {
+          const title = this.querySelector(".quick-action-title").textContent;
+          alert(`Funcionalidade "${title}" será implementada no backend!`);
+        });
+      });
+    </script>
+  </body>
+</html>
